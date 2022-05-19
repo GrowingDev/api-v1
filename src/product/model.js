@@ -170,23 +170,7 @@ const mockData = [
       { title: "package", url: "10001-package" },
     ],
   },
-  {
-    id: 0,
-    productId: "20001",
-    collection: "Maritim",
-    furniture: "Schwarz chrom",
-    inlay: "black",
-    etui: "alpaca leder",
-    package: "alpaca leder",
-    size: "90mm/42mm",
-    weight: "700 Gramm",
-    price: 300,
-    images: [
-      { title: "etui", url: "10001-etui" },
-      { title: "clip", url: "10001-front" },
-      { title: "package", url: "10001-package" },
-    ],
-  },
+
   {
     id: 1,
     productId: "20002",
@@ -308,6 +292,23 @@ const mockData = [
   },
   {
     id: 8,
+    productId: "20009",
+    collection: "Maritim",
+    furniture: "Schwarz chrom",
+    inlay: "black",
+    etui: "alpaca leder",
+    package: "alpaca leder",
+    size: "90mm/42mm",
+    weight: "700 Gramm",
+    price: 300,
+    images: [
+      { title: "etui", url: "10001-etui" },
+      { title: "clip", url: "10001-front" },
+      { title: "package", url: "10001-package" },
+    ],
+  },
+  {
+    id: 9,
     productId: "20009",
     collection: "Maritim",
     furniture: "Schwarz chrom",
