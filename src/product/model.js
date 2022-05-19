@@ -171,7 +171,7 @@ const mockData = [
     ],
   },
   {
-    id: 10,
+    id: 0,
     productId: "20001",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -188,7 +188,7 @@ const mockData = [
     ],
   },
   {
-    id: 11,
+    id: 1,
     productId: "20002",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -205,7 +205,7 @@ const mockData = [
     ],
   },
   {
-    id: 12,
+    id: 2,
     productId: "20003",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -222,7 +222,7 @@ const mockData = [
     ],
   },
   {
-    id: 13,
+    id: 3,
     productId: "20004",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -239,7 +239,7 @@ const mockData = [
     ],
   },
   {
-    id: 14,
+    id: 4,
     productId: "20005",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -256,7 +256,7 @@ const mockData = [
     ],
   },
   {
-    id: 15,
+    id: 5,
     productId: "20006",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -273,7 +273,7 @@ const mockData = [
     ],
   },
   {
-    id: 16,
+    id: 6,
     productId: "20007",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -290,7 +290,7 @@ const mockData = [
     ],
   },
   {
-    id: 17,
+    id: 7,
     productId: "20008",
     collection: "Maritim",
     furniture: "Schwarz chrom",
@@ -307,7 +307,7 @@ const mockData = [
     ],
   },
   {
-    id: 18,
+    id: 8,
     productId: "20009",
     collection: "Maritim",
     furniture: "Schwarz chrom",
