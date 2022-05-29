@@ -28,14 +28,20 @@ db.articles.belongsToMany(db.products, { through: 'articleGroups' });
 db.products.belongsToMany(db.articles, { through: 'articleGroups' });
 db.contacts.belongsTo(db.entitys);
 db.entitys.hasOne(db.contacts, {
-  foreignKey: "contact",
+  foreignKey: {
+    type: Sequelize.DataTypes.UUID,
+  },
 });
 db.shipping_addresses.belongsTo(db.entitys);
 db.billing_addresses.belongsTo(db.entitys);
-db.entitys.hasOne(db.billing_addresses, {
-  foreignKey: "billing_address",
+db.entitys.hasOne(db.billing_addresses,{
+  foreignKey: {
+    type: Sequelize.DataTypes.UUID,
+  },
 });
 db.entitys.hasOne(db.shipping_addresses, {
-  foreignKey: "shipping_address",
+  foreignKey: {
+    type: Sequelize.DataTypes.UUID,
+  },
 });
 module.exports = db;

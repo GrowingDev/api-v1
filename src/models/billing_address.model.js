@@ -5,25 +5,25 @@ module.exports = (sequelize, Sequelize) => {
   const BillingAddress = sequelize.define(
     "billing_address",
     {
-      gender: {
-        type: Sequelize.STRING,
-      },
       title: {
         type: Sequelize.STRING,
       },
-      pre_name: {
+      street: {
         type: Sequelize.STRING,
       },
-      last_name: {
+      street_nr: {
         type: Sequelize.STRING,
       },
-      phone_primary: {
+      extension: {
         type: Sequelize.STRING,
       },
-      phone_secondary: {
+      post_code: {
         type: Sequelize.STRING,
       },
-      email: {
+      city: {
+        type: Sequelize.STRING,
+      },
+      country: {
         type: Sequelize.STRING,
       },
     },

@@ -1,122 +1,228 @@
-const db = require("../models");
-const Product = db.products;
-const Op = db.Sequelize.Op;
+const { PrismaClient } = require("@prisma/client");
 
-exports.create = (req, res) => {
-    console.log(req.body.title)
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!",
+const prisma = new PrismaClient();
+exports.addProductComponent = async (req, res) => {
+  const { articleId, title, description, amount, productId,price } = req.body;
+  try {
+    const data = await prisma.productComponent.create({
+      data: {
+        articleId,
+        title,
+        description,
+        amount,
+        price,
+        productId: Number(productId),
+      },
     });
-    return;
+    console.log(data)
+    res.send(data);
+  } catch (error) {
+    console.log(error)
+    res.send(error);
   }
-
-  const newProduct = {
-    title: req.body.title,
-  };
-
-  Product.create(newProduct)
-  .then(data => {
-      res.send(data)
-  })
-  .catch(err => {
-      res.status(500).send({
-          message: err.message || "Some error occurred while creating the Product."
-      })
-  })
 };
-
-exports.findAll = (req, res) => {
-    Product.findAll()
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Products."
-        });
-      });
-  };
-
-exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Product.findByPk(id)
-      .then(data => {
-        if (data) {
-          res.send(data);
-        } else {
-          res.status(404).send({
-            message: `Cannot find Product with id=${id}.`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving Product with id=" + id
-        });
-      });
-  };
-
-exports.update = (req, res) => {
-    const id = req.params.id;
-    Product.update(req.body, {
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Product was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Product with id=${id}. Maybe Tutorial was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Tutorial with id=" + id
-        });
-      });
-  };
-
-
-exports.delete = (req, res) => {
+exports.getProductComponents = async (req, res) => {
   const id = req.params.id;
-  Product.destroy({
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Product was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Product with id=${id}. Maybe Product was not found!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete Product with id=" + id
-      });
+
+  const components = await prisma.productComponent.findMany({
+    where: {
+      productId: Number(id),
+    },
+  });
+  console.log(components)
+  res.send(components);
+};
+exports.updateProductComponent = async (req, res) => {
+  const id = req.params.id
+  const {amount} = req.body;
+
+  const components = await prisma.productComponent.update({
+    where: {
+      id: Number(id),
+    },
+    data:{
+      amount:amount
+    }
+  });
+  console.log(components)
+  res.send(components);
+};
+exports.deleteProductComponent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const component = await prisma.productComponent.delete({
+      where: { id: Number(id) },
     });
+    res.send(component);
+  } catch (error) {
+    res.send(error);
+  }
 };
 
-exports.deleteAll = (req, res) => {
-    Product.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} Products were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all Products."
-        });
-      });
-  };
+exports.create = async (req, res) => {
+  const {
+    name,
+    collection,
+    furniture,
+    inlay,
+    etui,
+    box,
+    size,
+    weight,
+    ean,
+    eori,
+    price_b2c,
+    price_b2b,
+    calculation,
+    img_urls,
+    productComponents,
+  } = req.body;
+
+  try {
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        collection,
+        furniture,
+        inlay,
+        etui,
+        box,
+        size,
+        weight,
+        ean,
+        eori,
+        price_b2c,
+        price_b2b,
+        calculation: {
+          create: {
+            completition: Number(calculation.completition),
+            boxing: Number(calculation.boxing),
+            logistic: Number(calculation.logistic),
+            license: Number(calculation.license),
+          },
+        },
+        img_urls: {
+          create: {
+            front: img_urls.front,
+            back: img_urls.back,
+            etui: img_urls.etui,
+            box: img_urls.box,
+          },
+        },
+      },
+    });
+    console.log(product);
+    res.send(product);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+};
+
+exports.findAll = async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({});
+    res.send(products);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+exports.findOne = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        calculation: true,
+        img_urls: true,
+        productComponents: true,
+      },
+    });
+    res.send(product);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+exports.update = async (req, res) => {
+  const {
+    id,
+    name,
+    collection,
+    furniture,
+    inlay,
+    etui,
+    box,
+    size,
+    weight,
+    ean,
+    eori,
+    price_b2c,
+    price_b2b,
+    calculation,
+    img_urls,
+    productComponents,
+  } = req.body;
+
+  try {
+    const data = await prisma.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        name,
+        collection,
+        furniture,
+        inlay,
+        etui,
+        box,
+        size,
+        weight,
+        ean,
+        eori,
+        price_b2c,
+        price_b2b,
+        calculation: {
+          update: {
+            completition: Number(calculation.completition),
+            boxing: Number(calculation.boxing),
+            logistic: Number(calculation.logistic),
+            license: Number(calculation.license),
+          },
+        },
+        img_urls: {
+          update: {
+            front: img_urls.front,
+            back: img_urls.back,
+            etui: img_urls.etui,
+            box: img_urls.box,
+          },
+        },
+      },
+    });
+    console.log(data);
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+};
+
+exports.delete = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const product = await prisma.product.delete({
+      where: { id: Number(id) },
+    });
+    res.send(product);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+exports.deleteAll = async (req, res) => {};

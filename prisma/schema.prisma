@@ -1,0 +1,185 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Entity {
+  id                Int              @id @default(autoincrement())
+  customer_type     CustomerType     @default(B2C)
+  company           String?
+  taxId             String?
+  uId               String?
+  eori              String?
+  business_homepage String?
+  business_phone    String?
+  contact           Contact?
+  billing_address   BillingAddress?
+  shipping_address  ShippingAddress?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @default(now())
+
+}
+
+enum CustomerType {
+  B2C
+  B2B
+  SUPPLIER
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  gender    Gender?  @default(MALE)
+  title     String?
+  pre_name  String?
+  last_name String?
+  phone_01  String?
+  phone_02  String?
+  mail      String?
+  entity    Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId  Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  DIVERSE
+}
+
+model BillingAddress {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  street    String?
+  street_nr String?
+  extension String?
+  post_code String?
+  city      String?
+  country   String?
+  entity    Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId  Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model ShippingAddress {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  street    String?
+  street_nr String?
+  extension String?
+  post_code String?
+  city      String?
+  country   String?
+  entity    Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId  Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Product {
+  id                Int                @id @default(autoincrement())
+  name              String?
+  collection        String?
+  furniture         String?
+  inlay             String?
+  etui              String?
+  box               String?
+  size              String?
+  weight            String?
+  ean               String?
+  eori              String?
+  price_b2c         String?
+  price_b2b         String?
+  calculation       Calculation?
+  img_urls          Images?
+  productComponents ProductComponent[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now())
+}
+
+model Calculation {
+  id           Int      @id @default(autoincrement())
+  completition Float?
+  boxing       Float?
+  logistic     Float?
+  license      Float?
+  Product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId    Int      @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+}
+
+model Images {
+  id        Int      @id @default(autoincrement())
+  front     String?
+  back      String?
+  etui      String?
+  box       String?
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Article {
+  id           Int          @id @default(autoincrement())
+  name         String?
+  description  String?
+  article_type ArticleType? @default(STANDARD)
+  supplier     String?
+  supplier_id  String?
+  ean          String?
+  price        Float?
+  marge        Float?
+  total        Float?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now())
+}
+
+enum ArticleType {
+  STANDARD
+  FEDER
+  BUEGELHALTER
+  HALTEBUEGEL
+  ETUI
+  FLUEGEL
+  DESIGN
+  OEFFNER
+  VERPACKUNG
+  DRUCKERZEUGNIS
+  SONSTIGE
+}
+
+model ProductComponent {
+  id          Int      @id @default(autoincrement())
+  articleId   Int
+  title       String
+  description String?
+  price       Float?
+  amount      Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  Product     Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   Int?
+}
+
+model Collection {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Print {
+  id        Int      @id @default(autoincrement())
+  orderId   String?
+  front     String?
+  back      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

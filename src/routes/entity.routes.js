@@ -4,7 +4,7 @@ module.exports = (app) => {
 
   router.post("/", entitys.create);
 
-  router.get("/", entitys.findAll);
+  router.get("/filter/:type", entitys.findAllWhere);
 
   router.get("/:id", entitys.findOne);
 

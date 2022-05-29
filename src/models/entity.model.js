@@ -10,19 +10,19 @@ module.exports = (sequelize, Sequelize) => {
       taxId: {
         type: Sequelize.STRING,
       },
+      company: {
+        type: Sequelize.STRING,
+      },
       uId: {
         type: Sequelize.STRING,
       },
       eori: {
         type: Sequelize.STRING,
       },
+      phone: {
+        type: Sequelize.STRING,
+      },
       homepage: {
-        type: Sequelize.STRING,
-      },
-      tax: {
-        type: Sequelize.STRING,
-      },
-      total: {
         type: Sequelize.STRING,
       },
     },

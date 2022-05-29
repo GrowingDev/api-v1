@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
       supplier: {
         type: Sequelize.STRING,
       },
+      group: {
+        type: Sequelize.STRING,
+      },
       supplier_article_id: {
         type: Sequelize.STRING,
       },

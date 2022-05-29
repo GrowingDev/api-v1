@@ -2,6 +2,9 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, Sequelize) => {
   const Print = sequelize.define("print", {
+    orderId: {
+      type: Sequelize.STRING,
+    },
     img_front: {
       type: Sequelize.STRING,
     },
