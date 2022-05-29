@@ -42,15 +42,6 @@ require("./src/routes/print.routes")(app);
 require("./src/routes/product.routes")(app);
 require("./src/routes/entity.routes")(app);
 require("./src/routes/upload.routes")(app);
-// init DB
-const db = require("./src/models");
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
-
-
-
-
 
 
 app.use("/collection", collectionRouter);
